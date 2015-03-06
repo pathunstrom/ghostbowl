@@ -16,8 +16,11 @@ GRASS = (161, 199, 107)
 GHOST = (102, 114, 153)
 SHADE = (64, 64, 64)
 BLACK = (0, 0, 0)
+SURFACE = None
 
 tau = 2 * pi
+rotation_range = 1
+rotation_multiplier = 6
 
 
 class Ba(sprite.DirtySprite):
@@ -69,23 +72,31 @@ class Shade(Ba):
 
     def __init__(self, x, y):
         super(Shade, self).__init__(x, y, SHADE)
-        self.radius = 10
-        self.range = 10
-        self.t = 4.71238898038469
+        self.radius = 15
+        self.range = 35
+        self.t = 0
         self.target_t = self.t
 
     def update(self, delta):
         super(Shade, self).update(delta)
-        self.facing = Vector(*self._get_target(delta)).normalize
+        self.facing = Vector(*self._get_target(delta)).normalize()
 
     def _get_target(self, delta):
-        center = Vector(self._x, self._y) + (self.facing * self.range)
-        print(center)
-        x = center.x + self.radius * cos(self.t)
-        y = center.y + self.radius * sin(self.t)
-        self.t += uniform(-1, 1) * delta
+        x, y = self.facing * self.range
+        x += self._x
+        y += self._y
+        a = x + self.radius * cos(self.t)
+        b = y + self.radius * sin(self.t)
+
+        if SURFACE is not None:
+            draw.line(SURFACE, (0, 0, 0), (self._x, self._y), (x, y))
+            draw.line(SURFACE, (255, 0, 0), (self._x, self._y), (a, b))
+            draw.circle(SURFACE, (0, 0, 0), (int(x), int(y)), self.radius, 1)
+
+        change = uniform(-rotation_range, rotation_range)
+        self.t += change * delta * rotation_multiplier
         if self.t > tau:
             self.t -= tau
         elif self.t < 0:
             self.t += tau
-        return x, y
+        return a - x, b - y
