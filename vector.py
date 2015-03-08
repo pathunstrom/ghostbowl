@@ -79,6 +79,12 @@ class Vector2(object):
         if isinstance(other, Vector2):
             return self.x != other.x or self.y != other.y
 
+    def normalize(self):
+        length = self.length
+        x = self.x / length
+        y = self.y / length
+        return Vector2(x, y)
+
     def rotate(self, degrees):
         r = radians(degrees)
         rcos = cos(r)
@@ -87,12 +93,11 @@ class Vector2(object):
         y = round(self.x * rsin + self.y * rcos, 5)
         return Vector2(x, y)
 
-    def normalize(self):
-        length = self.length
-        x = self.x / length
-        y = self.y / length
-        return Vector2(x, y)
-
+    def truncate(self, max_length):
+        if self.length > max_length:
+            scalar = max_length/self.length
+            return Vector2(self.x * scalar, self.y * scalar)
+        return self
 
 if __name__ == "__main__":
 
@@ -139,3 +144,11 @@ if __name__ == "__main__":
     assert result == -1
     result = vector * 2
     assert result == Vector2(2, 0)
+
+    print("Test truncate")
+    vector = Vector2(6, 8)
+    vector2 = vector.truncate(5)
+    assert vector2.length == 5
+    assert vector2.normalize() == vector.normalize()
+    vector2 = vector.truncate(15)
+    assert vector2 == vector
