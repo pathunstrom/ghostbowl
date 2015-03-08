@@ -72,8 +72,8 @@ class Shade(Ba):
 
     def __init__(self, x, y):
         super(Shade, self).__init__(x, y, SHADE)
-        self.radius = 15
-        self.range = 35
+        self.radius = 4
+        self.range = 15
         self.t = 0
         self.target_t = self.t
 

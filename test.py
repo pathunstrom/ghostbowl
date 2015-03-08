@@ -15,6 +15,8 @@ running = True
 spawn = 5
 baddies = pygame.sprite.Group()
 baddies.add(ghosts.Shade(play_field.centerx,
+                         play_field.centery))
+baddies.add(ghosts.Spirit(play_field.centerx,
                           play_field.centery))
 ghosts.SURFACE = display
 

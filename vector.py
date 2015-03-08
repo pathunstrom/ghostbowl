@@ -139,3 +139,10 @@ if __name__ == "__main__":
     assert result == -1
     result = vector * 2
     assert result == Vector2(2, 0)
+    print("Success")
+
+    print("Test truncate")
+    vector = Vector2(6, 8)
+    assert len(vector) == 10
+    vector = vector.truncate(5)
+    assert len(vector) == 5
