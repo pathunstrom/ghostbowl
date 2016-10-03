@@ -24,9 +24,9 @@ while running:
     delta = clock.tick(60) / 1000.0
     spawn -= delta
     display.fill(GRASS)
-    # if spawn <= 0:
-    #     baddies.add(ghosts.Spirit(randint(100, 400), randint(100, 400)))
-    #     spawn = 5.0
+    if spawn <= 0:
+        baddies.add(ghosts.Spirit(randint(100, 400), randint(100, 400)))
+        spawn = 5.0
     baddies.update(delta)
     for baddy in baddies.sprites():
         if not play_field.colliderect(baddy.rect):
